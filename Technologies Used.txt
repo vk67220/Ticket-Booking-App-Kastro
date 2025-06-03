@@ -1,0 +1,52 @@
+This is a comprehensive Movie Ticket Booking application built using a microservices architecture. Here's a breakdown of the technologies used:
+
+Frontend:
+
+React with TypeScript for the UI components
+Tailwind CSS for styling
+Vite as the build tool
+Lucide React for icons
+HTML/CSS/JavaScript (TypeScript)
+Backend (Microservices):
+
+Java 17
+Spring Boot 3.2.2
+Spring Security for authentication
+Spring Data JPA for database operations
+JWT for token-based authentication
+Maven for build management
+Database:
+
+MySQL 8.0
+The application is structured as a microservices architecture with the following services:
+
+API Gateway Service (Port 80) - Entry point for all client requests
+User Service (Port 81) - Handles user authentication and profiles
+Movie Service (Port 82) - Manages movie and theater information
+Booking Service (Port 83) - Handles ticket bookings and seat selection
+Payment Service (Port 84) - Manages payment processing
+Admin Service (Port 8999) - Provides admin dashboard functionality
+Each service:
+
+Runs in its own Docker container
+Has its own database schema
+Can be deployed independently
+Communicates via REST APIs
+Is horizontally scalable
+The application supports two types of users:
+
+Regular users who can:
+
+Browse movies
+Book tickets
+Select seats
+Make payments
+View booking history
+Administrators who can:
+
+Manage movies
+Set ticket prices
+Configure theaters
+View booking statistics
+This is a real-time application where updates to movie availability, seat selection, and bookings are reflected immediately across all users.
+

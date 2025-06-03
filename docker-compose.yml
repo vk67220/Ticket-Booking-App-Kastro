@@ -1,0 +1,125 @@
+version: '3.8'
+
+services:
+  # API Gateway Service
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "80:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - USER_SERVICE_URL=http://user-service:8080
+      - MOVIE_SERVICE_URL=http://movie-service:8080
+      - BOOKING_SERVICE_URL=http://booking-service:8080
+      - PAYMENT_SERVICE_URL=http://payment-service:8080
+    depends_on:
+      - user-service
+      - movie-service
+      - booking-service
+      - payment-service
+    networks:
+      - movie-booking-network
+
+  # User Service
+  user-service:
+    build: ./user-service
+    ports:
+      - "81:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://movie-db:3306/user_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
+    depends_on:
+      - movie-db
+    networks:
+      - movie-booking-network
+
+  # Movie Service
+  movie-service:
+    build: ./movie-service
+    ports:
+      - "82:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://movie-db:3306/movie_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
+    depends_on:
+      - movie-db
+    networks:
+      - movie-booking-network
+
+  # Booking Service
+  booking-service:
+    build: ./booking-service
+    ports:
+      - "83:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://movie-db:3306/booking_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
+      - MOVIE_SERVICE_URL=http://movie-service:8080
+      - USER_SERVICE_URL=http://user-service:8080
+    depends_on:
+      - movie-db
+      - movie-service
+      - user-service
+    networks:
+      - movie-booking-network
+
+  # Payment Service
+  payment-service:
+    build: ./payment-service
+    ports:
+      - "84:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://movie-db:3306/payment_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
+      - BOOKING_SERVICE_URL=http://booking-service:8080
+    depends_on:
+      - movie-db
+      - booking-service
+    networks:
+      - movie-booking-network
+
+  # Admin Service
+  admin-service:
+    build: ./admin-service
+    ports:
+      - "8999:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://movie-db:3306/admin_db?createDatabaseIfNotExist=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
+      - MOVIE_SERVICE_URL=http://movie-service:8080
+    depends_on:
+      - movie-db
+      - movie-service
+    networks:
+      - movie-booking-network
+
+  # MySQL Database
+  movie-db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=movie_booking
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./db-init:/docker-entrypoint-initdb.d
+    networks:
+      - movie-booking-network
+
+networks:
+  movie-booking-network:
+    driver: bridge
+
+volumes:
+  mysql-data:

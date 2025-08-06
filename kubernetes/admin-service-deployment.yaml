@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: admin-service
-        image: your-registry.com/admin-service:{{VERSION}}
+        image: prasad5806/admin-service:{{VERSION}}
         ports:
         - containerPort: 8080
         env:

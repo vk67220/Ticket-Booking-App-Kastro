@@ -37,10 +37,10 @@ spec:
           value: "http://movie-service:8080"
         resources:
           limits:
-            cpu: "500m"
-            memory: "512Mi"
+            cpu: "100m"
+            memory: "128Mi"
           requests:
-            cpu: "200m"
+            cpu: "300m"
             memory: "256Mi"
         readinessProbe:
           httpGet:

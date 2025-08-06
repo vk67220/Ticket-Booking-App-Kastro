@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: user-service
-        image: your-registry.com/user-service:{{VERSION}}
+        image: prasad5806/user-service:{{VERSION}}
         ports:
         - containerPort: 8080
         env:

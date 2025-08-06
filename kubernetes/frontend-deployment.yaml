@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: your-registry.com/frontend:{{VERSION}}
+        image: prasad5806/frontend:{{VERSION}}
         ports:
         - containerPort: 80
         resources:

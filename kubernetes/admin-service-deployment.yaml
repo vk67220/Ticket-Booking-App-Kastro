@@ -37,8 +37,8 @@ spec:
           value: "http://movie-service:8080"
         resources:
           limits:
-            cpu: "100m"
-            memory: "128Mi"
+            cpu: "500m"
+            memory: "512Mi"
           requests:
             cpu: "300m"
             memory: "256Mi"
